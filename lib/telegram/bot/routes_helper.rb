@@ -22,6 +22,22 @@ module Telegram
         def escape_token(token)
           token && token.tr(':', '_')
         end
+
+        # Returns the router for the given bot. Returns the main application
+        # routes url helpers by default.
+        #
+        # If you add a bot inside an engine, you have to configure the engine
+        # name in your secrets.yml:
+        #
+        #   production:
+        #     bots:
+        #       blorgh_bot:
+        #         engine_name: Blorgh::Engine
+        #
+        def routes_for_bot(bot)
+          engine = bot.engine_name.constantize || Rails.application
+          engine.send(:routes).send(:url_helpers)
+        end
       end
 
       #   # Create routes for all Telegram.bots to use same controller:

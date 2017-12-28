@@ -38,13 +38,14 @@ module Telegram
         end
       end
 
-      attr_reader :client, :token, :username, :base_uri
+      attr_reader :client, :token, :username, :base_uri, :engine_name
 
       def initialize(token = nil, username = nil, **options)
         @client = HTTPClient.new
         @token = token || options[:token]
         @username = username || options[:username]
         @base_uri = format URL_TEMPLATE, self.token
+        @engine_name = options[:engine_name]
       end
 
       def request(action, body = {})
